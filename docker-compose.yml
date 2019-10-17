@@ -6,11 +6,11 @@ services:
       context: ../TypeDoqer
       dockerfile: nginx/Dockerfile
     ports:
-      - 8080:80
+      - ${NGINX_PORT}:80
     depends_on:
       - php-fpm
     volumes:
-      - ../.:/var/www/laravel-six
+      - ../.:/var/www/${PROJECT_NAME}
   php-fpm:
     build:
       context: ../TypeDoqer
@@ -24,8 +24,10 @@ services:
         - INSTALL_JSON=${INSTALL_JSON}
         - INSTALL_SOAP=${INSTALL_SOAP}
         - INSTALL_MBSTRING=${INSTALL_MBSTRING}
+    ports:
+      - ${PHP_FPM_PORT}:9000
     volumes:
-        - ../.:/var/www/laravel-six
+        - ../.:/var/www/${PROJECT_NAME}
     depends_on:
       - mysql
       - rabbitmq
@@ -33,6 +35,8 @@ services:
     build:
       context: ../TypeDoqer
       dockerfile: mysql/Dockerfile
+      args:
+        - MYSQL_VERSION=${MYSQL_VERSION}
     ports:
       - ${MYSQL_PORT}:3306
     environment:
