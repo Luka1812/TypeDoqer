@@ -40,8 +40,8 @@ services:
     ports:
       - ${MYSQL_PORT}:3306
     environment:
-      - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_DATABASE=laravel_six
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
     volumes:
       - ../data/mysql:/var/lib/mysql
   rabbitmq:
@@ -52,9 +52,9 @@ services:
       - 5672:5672
       - 15672:15672
     environment:
-      RABBITMQ_DEFAULT_PASS: pass
-      RABBITMQ_DEFAULT_USER: user
-      RABBITMQ_DEFAULT_VHOST: /
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
+      RABBITMQ_DEFAULT_VHOST: ${RABBITMQ_DEFAULT_VHOST}
 #    volumes:
 #      - ./data:/var/lib/rabbitmq
 
