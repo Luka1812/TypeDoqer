@@ -1,0 +1,45 @@
+version: "3.7"
+
+services:
+  nginx:
+    build:
+      context: ../TypeDoqer
+      dockerfile: nginx/Dockerfile
+    ports:
+      - 8080:80
+    depends_on:
+      - php-fpm
+    volumes:
+      - ../.:/var/www/laravel-six
+  php-fpm:
+    build:
+      context: ../TypeDoqer
+      dockerfile: php-fpm/Dockerfile
+    volumes:
+        - ../.:/var/www/laravel-six
+    depends_on:
+      - mysql
+      - rabbitmq
+  mysql:
+    build:
+      context: ../TypeDoqer
+      dockerfile: mysql/Dockerfile
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=laravel_six
+    volumes:
+      - ../data/mysql:/var/lib/mysql
+  rabbitmq:
+    build:
+      context: ../TypeDoqer
+      dockerfile: rabbitmq/Dockerfile
+    ports:
+      - 5672:5672
+      - 15672:15672
+    environment:
+      RABBITMQ_DEFAULT_PASS: pass
+      RABBITMQ_DEFAULT_USER: user
+      RABBITMQ_DEFAULT_VHOST: /
+
