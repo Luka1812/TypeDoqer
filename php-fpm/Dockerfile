@@ -1,22 +1,71 @@
 FROM php:7.2-fpm
 
-RUN apt-get update \
-&& apt install -y libxml2-dev  \
-&& apt install -y openssl  \
-&& docker-php-ext-install pdo pdo_mysql
+RUN apt-get update
 
-RUN docker-php-ext-install json \
-&& docker-php-ext-install soap \
-&& docker-php-ext-install mbstring \
-&& pecl install -o -f mailparse \
-&&  rm -rf /tmp/pear \
-&& docker-php-ext-enable mailparse
+#LIB_XML#
+ARG INSTALL_LIB_XML
 
-#INSTALL SOCKET EXTENSION#
-ARG INSTALL_PHP_SOCKET
+RUN if [ ${INSTALL_LIB_XML} = true ]; then \
+    apt install -y libxml2-dev \
+;fi
+#########################
 
-RUN if [ ${INSTALL_PHP_SOCKET} = true ]; then \
+#OPENSSL#
+ARG INSTALL_OPEN_SSL
+
+RUN if [ ${INSTALL_OPEN_SSL} = true ]; then \
+    apt install -y openssl \
+;fi
+#########################
+
+#PDO#
+ARG INSTALL_PDO
+
+RUN if [ ${INSTALL_PDO} = true ]; then \
+    docker-php-ext-install pdo pdo_mysql \
+;fi
+#########################
+
+#SOCKET#
+ARG INSTALL_SOCKET
+
+RUN if [ ${INSTALL_SOCKET} = true ]; then \
     docker-php-ext-install sockets \
 ;fi
 #########################
+
+#JSON#
+ARG INSTALL_JSON
+
+RUN if [ ${INSTALL_JSON} = true ]; then \
+    docker-php-ext-install json \
+;fi
+#########################
+
+#SOAP#
+ARG INSTALL_SOAP
+
+RUN if [ ${INSTALL_SOAP} = true ]; then \
+    docker-php-ext-install soap \
+;fi
+#########################
+
+#MBSTRING#
+ARG INSTALL_MBSTRING
+
+RUN if [ ${INSTALL_MBSTRING} = true ]; then \
+    docker-php-ext-install mbstring \
+;fi
+#########################
+
+#MAIL PARSE#
+ARG INSTALL_MAIL_PARSE
+
+RUN if [ ${INSTALL_MAIL_PARSE} = true ]; then \
+    pecl install -o -f mailparse \
+    &&  rm -rf /tmp/pear \
+    && docker-php-ext-enable mailparse \
+;fi
+#########################
+
 

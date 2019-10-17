@@ -16,7 +16,14 @@ services:
       context: ../TypeDoqer
       dockerfile: php-fpm/Dockerfile
       args:
-        - INSTALL_PHP_SOCKET=true
+        - INSTALL_SOCKET=${INSTALL_SOCKET}
+        - INSTALL_MAIL_PARSE=${INSTALL_MAIL_PARSE}
+        - INSTALL_PDO=${INSTALL_PDO}
+        - INSTALL_LIB_XML=${INSTALL_LIB_XML}
+        - INSTALL_OPEN_SSL=${INSTALL_OPEN_SSL}
+        - INSTALL_JSON=${INSTALL_JSON}
+        - INSTALL_SOAP=${INSTALL_SOAP}
+        - INSTALL_MBSTRING=${INSTALL_MBSTRING}
     volumes:
         - ../.:/var/www/laravel-six
     depends_on:
@@ -27,7 +34,7 @@ services:
       context: ../TypeDoqer
       dockerfile: mysql/Dockerfile
     ports:
-      - 3306:3306
+      - ${MYSQL_PORT}:3306
     environment:
       - MYSQL_ROOT_PASSWORD=root
       - MYSQL_DATABASE=laravel_six
@@ -44,6 +51,6 @@ services:
       RABBITMQ_DEFAULT_PASS: pass
       RABBITMQ_DEFAULT_USER: user
       RABBITMQ_DEFAULT_VHOST: /
-    volumes:
-      - ./data:/var/lib/rabbitmq
+#    volumes:
+#      - ./data:/var/lib/rabbitmq
 
