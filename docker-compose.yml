@@ -49,12 +49,12 @@ services:
       context: ../TypeDoqer
       dockerfile: rabbitmq/Dockerfile
     ports:
-      - 5672:5672
-      - 15672:15672
+      - ${RABBITMQ_PORT}:5672
+      - ${RABBITMQ_MANAGEMENT_PORT}:15672
     environment:
       RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
       RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
       RABBITMQ_DEFAULT_VHOST: ${RABBITMQ_DEFAULT_VHOST}
-#    volumes:
-#      - ./data:/var/lib/rabbitmq
+    volumes:
+      - ./rabbitmq/data:/var/lib/rabbitmq
 
