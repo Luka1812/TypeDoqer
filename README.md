@@ -25,5 +25,12 @@ DB_PASSWORD=database_password_should_be_the_same_as_from_docker_env
 - change this => server_name www.your_custom-domain.extension your_custom-domain.extension;
 - update your local machine's /etc/hosts file and register above domains in it
 
-### 3. Set your project name/name of root directory
+### 4. Set your project name/name of root directory
 - go to TypeDoqer/.docker.env and change PROJECT_NAME var
+
+### 5. Run docker
+- go to TypeDoqer directory and run following commands:
+
+`docker-compose build nginx php-fpm mysql rabbitmq` 
+
+`docker-compose up -d nginx php-fpm mysql rabbitmq` 
