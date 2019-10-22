@@ -1,6 +1,12 @@
 FROM php:7.2-fpm
 
-RUN apt-get update
+# Replace shell with bash so we can source files
+RUN rm /bin/sh && ln -s /bin/bash /bin/sh
+
+# make sure apt is up to date
+RUN apt-get update --fix-missing
+RUN apt-get install -y curl
+RUN apt-get install -y build-essential libssl-dev zlib1g-dev libpng-dev libjpeg-dev libfreetype6-dev
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
@@ -91,9 +97,26 @@ RUN if [ ${INSTALL_SASS} = true ]; then \
 ;fi
 #########################
 
+ARG INSTALL_IMAGEMAGICK=true
+
+RUN if [ ${INSTALL_IMAGEMAGICK} = true ]; then \
+    apt-get install -y libmagickwand-dev imagemagick && \
+    pecl install imagick && \
+    docker-php-ext-enable imagick \
+;fi
+
 
 RUN apt-get install -y sendmail libpng-dev
-RUN docker-php-ext-install gd
+RUN  docker-php-ext-install opcache
+
+RUN  docker-php-ext-install exif \
+&& docker-php-ext-enable exif
+
+RUN docker-php-ext-configure gd --with-freetype-dir=/usr/lib/ --with-png-dir=/usr/lib/  --with-jpeg-dir=/usr/lib/ --with-gd \
+ && docker-php-ext-install gd
+
+
+
 
 
 
