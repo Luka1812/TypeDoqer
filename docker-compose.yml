@@ -25,6 +25,7 @@ services:
         - INSTALL_SOAP=${INSTALL_SOAP}
         - INSTALL_MBSTRING=${INSTALL_MBSTRING}
         - INSTALL_NODE=${INSTALL_NODE}
+        - INSTALL_SASS=${INSTALL_SASS}
     ports:
       - ${PHP_FPM_PORT}:9000
     volumes:

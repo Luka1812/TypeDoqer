@@ -4,6 +4,8 @@ RUN apt-get update
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
+WORKDIR /var/www/laravel-six
+
 #LIB_XML#
 ARG INSTALL_LIB_XML
 
@@ -80,5 +82,19 @@ RUN if [ ${INSTALL_NODE} = true ]; then \
   && curl -L https://www.npmjs.com/install.sh | sh \
 ;fi
 #########################
+
+#NODE#
+ARG INSTALL_SASS
+
+RUN if [ ${INSTALL_SASS} = true ]; then \
+  npm install node-sass \
+;fi
+#########################
+
+
+RUN apt-get install -y sendmail libpng-dev
+RUN docker-php-ext-install gd
+
+
 
 
