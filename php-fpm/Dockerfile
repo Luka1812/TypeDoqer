@@ -70,4 +70,15 @@ RUN if [ ${INSTALL_MAIL_PARSE} = true ]; then \
 ;fi
 #########################
 
+#NODE#
+ARG INSTALL_NODE
+
+RUN if [ ${INSTALL_NODE} = true ]; then \
+  apt-get install -y curl \
+  && curl -sL https://deb.nodesource.com/setup_9.x | bash - \
+  && apt-get install -y nodejs \
+  && curl -L https://www.npmjs.com/install.sh | sh \
+;fi
+#########################
+
 
