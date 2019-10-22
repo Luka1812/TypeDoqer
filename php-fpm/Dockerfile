@@ -68,6 +68,14 @@ RUN if [ ${INSTALL_MBSTRING} = true ]; then \
 ;fi
 #########################
 
+#OPCACHE#
+ARG INSTALL_OPCACHE
+
+RUN if [ ${INSTALL_OPCACHE} = true ]; then \
+    docker-php-ext-install opcache \
+;fi
+#########################
+
 #MAIL PARSE#
 ARG INSTALL_MAIL_PARSE
 
@@ -89,7 +97,7 @@ RUN if [ ${INSTALL_NODE} = true ]; then \
 ;fi
 #########################
 
-#NODE#
+#SASS#
 ARG INSTALL_SASS
 
 RUN if [ ${INSTALL_SASS} = true ]; then \
@@ -97,23 +105,33 @@ RUN if [ ${INSTALL_SASS} = true ]; then \
 ;fi
 #########################
 
-ARG INSTALL_IMAGEMAGICK=true
+#IMAGEMAGICK#
+ARG INSTALL_IMAGEMAGICK
 
 RUN if [ ${INSTALL_IMAGEMAGICK} = true ]; then \
     apt-get install -y libmagickwand-dev imagemagick && \
     pecl install imagick && \
     docker-php-ext-enable imagick \
 ;fi
+#########################
 
+#EXIF#
+ARG INSTALL_EXIF
 
-RUN apt-get install -y sendmail libpng-dev
-RUN  docker-php-ext-install opcache
+RUN if [ ${INSTALL_EXIF} = true ]; then \
+    docker-php-ext-install exif \
+    && docker-php-ext-enable exif \
+;fi
+#########################
 
-RUN  docker-php-ext-install exif \
-&& docker-php-ext-enable exif
+#GD#
+ARG INSTALL_GD
 
-RUN docker-php-ext-configure gd --with-freetype-dir=/usr/lib/ --with-png-dir=/usr/lib/  --with-jpeg-dir=/usr/lib/ --with-gd \
- && docker-php-ext-install gd
+RUN if [ ${INSTALL_GD} = true ]; then \
+    docker-php-ext-configure gd --with-freetype-dir=/usr/lib/ --with-png-dir=/usr/lib/  --with-jpeg-dir=/usr/lib/ --with-gd \
+    && docker-php-ext-install gd \
+;fi
+ #########################
 
 
 
